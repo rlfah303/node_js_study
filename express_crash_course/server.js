@@ -11,4 +11,9 @@ app.get('/',(req,res)=>{
     // res.status(500).send("hi")
 
 })
+
+
+const userRouter = require('./routes/users')
+
+app.use('/users',userRouter)
 app.listen(3000) 
