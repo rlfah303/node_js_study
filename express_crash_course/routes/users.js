@@ -7,17 +7,25 @@ router.get('/',(req,res)=>{
 })
 
 router.post('/',(req,res)=>{
-    res.send("Create User")
+    const isValid =false
+    if (isValid){
+        users.push({firstName: req.body.firstName})
+        res.redirect(`users/${users.length -1}`)
+    }else{
+        console.log("Error")
+        res.render('users/new', {firstName: req.body.firstName})
+    }
 })
 
 router.get('/new',(req,res)=>{
-    res.send("User New Form")
+    res.render("users/new")
 })
 
 
 router.route('/:id')
 .get((req,res)=>{
-    res.send(`Get user with ID ${req.params.id}`)
+    console.log(req.user)
+    res.send(`Get user wit  ID ${req.params.id}`)
 })
 .put((req,res)=>{
     res.send(`Update user with ID ${req.params.id}`)
