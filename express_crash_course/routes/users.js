@@ -17,7 +17,6 @@ router.get('/new',(req,res)=>{
 
 router.route('/:id')
 .get((req,res)=>{
-    console.log(req.user)
     res.send(`Get user with ID ${req.params.id}`)
 })
 .put((req,res)=>{
