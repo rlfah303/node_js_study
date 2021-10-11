@@ -22,6 +22,7 @@ function findPrimes(start, range) {
   }
 }
 
+
 if (isMainThread) {
   const max = 10000000;
   const threadCount = 8;
