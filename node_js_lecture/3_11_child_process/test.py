@@ -1,0 +1,1 @@
+print("Hello Python by Node.js")
