@@ -1,7 +1,14 @@
 const http = require('http');
+const fs =require('fs').promises;
 
-const server = http.createServer((req,res)=>{
-    res.write('<h1>Hello Node<h1>')
+const server = http.createServer(async (req,res) => {
+    try{
+        const data = await fs.readFile('./index.html');
+        res.end(data);
+    }catch(error){
+        res.end(error.message);
+    }
+    
 })
 
     .listen(8080,()=>{
