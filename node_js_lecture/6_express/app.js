@@ -9,6 +9,6 @@ app.get('/',(req,res)=>{
     res.send("hello express");
 });
 
-app.listen(app.get('port'),()=>{
+app.listen(app.get('port'), () => {
     console.log('express 실행')
 });
