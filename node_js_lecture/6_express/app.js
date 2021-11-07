@@ -13,9 +13,19 @@ app.set('port', process.env.PORT || 3000);
 app.use((req,res,next)=>{
     console.log("모든요청에 실행하고싶어요");
     next();
-})
+
+//에러가 발생하면 error middleware로 넘겨줌
+// }, (req,res,next)=>{
+//     try{
+//         console.log(adasdas);
+//     }catch(error){
+//         next(error);
+
+//     }
+});
 
 app.get('/',(req,res)=>{
+    //res.json({hello:'zddd'});
     res.sendFile(path.join(__dirname,'index.html'));
     //res.sendFile('./index.html');
 });
