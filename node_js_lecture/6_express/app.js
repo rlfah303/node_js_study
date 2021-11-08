@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const exp = require('constants');
 
 // express 순서 app -> app.set => 공통 middleware => error middleware
 const app = express();
@@ -12,8 +13,11 @@ app.set('port', process.env.PORT || 3000);
 
 // 요청과 응답을 기록하는 router, 개발시에는 dev 실무시에는 combined
 app.use(morgan('dev'));
-
+app.use('/', express.static(path.join(__dirname,'public')));  //('요청경로', express.static(__dirname,'실제경로')); 
 app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({extended : true})); //true 면 qs, false면 queryString
+
 
 //middleware
 app.use((req,res,next)=>{
@@ -34,17 +38,17 @@ app.use((req,res,next)=>{
 
 app.get('/',(req,res,next)=>{
     //res.json({hello:'zddd'});
-    req.cookies // {mycookie: 'test'}
-    res.cookie('name',encodeURIComponent(name),{
-        expires: new Date(),
-        httpOnly: true,
-        path:'/',
+    // req.cookies // {mycookie: 'test'}
+    // res.cookie('name',encodeURIComponent(name),{
+    //     expires: new Date(),
+    //     httpOnly: true,
+    //     path:'/',
 
-    }).
-    res.clearCookie('name',encodeURIComponent(name),{
-        httpOnly: true,
-        path:'/'
-    }),
+    // }).
+    // res.clearCookie('name',encodeURIComponent(name),{
+    //     httpOnly: true,
+    //     path:'/'
+    // }),
     res.sendFile(path.join(__dirname,'index.html'));
 
     //res.sendFile('./index.html');
