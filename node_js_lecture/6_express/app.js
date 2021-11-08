@@ -22,6 +22,8 @@ app.use((req,res,next)=>{
 //         next(error);
 
 //     }
+
+// next('route') 는 다음 라우터로 실행됨
 });
 
 app.get('/',(req,res)=>{
