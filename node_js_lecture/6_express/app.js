@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-
+const morgan = require('morgan');
 
 // express 순서 app -> app.set => 공통 middleware => error middleware
 const app = express();
@@ -8,6 +8,9 @@ const app = express();
 
 // port 를 속성/변수로 지정
 app.set('port', process.env.PORT || 3000);
+
+// 요청과 응답을 기록하는 router, 개발시에는 dev 실무시에는 combined
+app.use(morgan('dev'));
 
 //middleware
 app.use((req,res,next)=>{
