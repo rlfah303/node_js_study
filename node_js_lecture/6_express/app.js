@@ -5,8 +5,14 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const exp = require('constants');
 const session = require('express-session');
+const router = require('./routes');
 
 dotenv.config();
+const indexRouter = require('./routes');
+const userRouter = require('./routes/user');
+const { send } = require('process');
+
+
 // express 순서 app -> app.set => 공통 middleware => error middleware
 const app = express();
 
@@ -46,46 +52,54 @@ app.use((req,res,next)=>{
 
 // next('route') 는 다음 라우터로 실행됨
 });
-
-app.get('/',(req,res,next)=>{
-    console.log(process.env.COOKIE_SECRET);
-    //res.json({hello:'zddd'});
-    // req.cookies // {mycookie: 'test'}
-    // res.cookie('name',encodeURIComponent(name),{
-    //     expires: new Date(),
-    //     httpOnly: true,
-    //     path:'/',
-
-    // }).
-    // res.clearCookie('name',encodeURIComponent(name),{
-    //     httpOnly: true,
-    //     path:'/'
-    // }),
-
-    req.session
-    res.sendFile(path.join(__dirname,'index.html'));
-
-    //res.sendFile('./index.html');
-});
+ 
+app.use('/',indexRouter);
+app.use('/user',userRouter);
 
 app.post('/',(req,res)=>{
     res.send('hello express');
 });
 
-//wild card router (주로 맨 아래에 위치)
-app.get('/category/:name',(req,res) => {
-    res.send(`hello ${req.params.name}`); 
-});
-
-// app.get('*',(req,res) => {
-//     res.send(`hello everything`);
-// });
-
+app.use((req,res,next)=>{
+    res.status(404).redirect('/user');
+})
 app.use((err,req,res,next)=>{
     console.error(err);
-    res.send('에러가 발생')
-})
+    res.status(500).send(err.message);
+});
 
 app.listen(app.get('port'), () => {
-    console.log('express 실행')
+    console.log(app.get('port'),'번 포트에서 대기중');
 });
+
+
+// app.get('/',(req,res,next)=>{
+//     console.log(process.env.COOKIE_SECRET);
+//     //res.json({hello:'zddd'});
+//     // req.cookies // {mycookie: 'test'}
+//     // res.cookie('name',encodeURIComponent(name),{
+//     //     expires: new Date(),
+//     //     httpOnly: true,
+//     //     path:'/',
+
+//     // }).
+//     // res.clearCookie('name',encodeURIComponent(name),{
+//     //     httpOnly: true,
+//     //     path:'/'
+//     // }),
+
+//     req.session
+//     res.sendFile(path.join(__dirname,'index.html'));
+
+//     //res.sendFile('./index.html');
+// });
+
+
+// //wild card router (주로 맨 아래에 위치)
+// app.get('/category/:name',(req,res) => {
+//     res.send(`hello ${req.params.name}`); 
+// });
+
+// // app.get('*',(req,res) => {
+// //     res.send(`hello everything`);
+// // });
