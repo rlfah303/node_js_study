@@ -1,9 +1,12 @@
+const dotenv = require('dotenv');
 const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const exp = require('constants');
+const session = require('express-session');
 
+dotenv.config();
 // express 순서 app -> app.set => 공통 middleware => error middleware
 const app = express();
 
@@ -14,7 +17,15 @@ app.set('port', process.env.PORT || 3000);
 // 요청과 응답을 기록하는 router, 개발시에는 dev 실무시에는 combined
 app.use(morgan('dev'));
 app.use('/', express.static(path.join(__dirname,'public')));  //('요청경로', express.static(__dirname,'실제경로')); 
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(session({
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.COOKIE_SECRET,
+    cookie: {
+        httpOnly: true,
+    }
+}));
 app.use(express.json());
 app.use(express.urlencoded({extended : true})); //true 면 qs, false면 queryString
 
@@ -37,6 +48,7 @@ app.use((req,res,next)=>{
 });
 
 app.get('/',(req,res,next)=>{
+    console.log(process.env.COOKIE_SECRET);
     //res.json({hello:'zddd'});
     // req.cookies // {mycookie: 'test'}
     // res.cookie('name',encodeURIComponent(name),{
@@ -49,6 +61,8 @@ app.get('/',(req,res,next)=>{
     //     httpOnly: true,
     //     path:'/'
     // }),
+
+    req.session
     res.sendFile(path.join(__dirname,'index.html'));
 
     //res.sendFile('./index.html');
