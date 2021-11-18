@@ -1,3 +1,4 @@
+
 const Sequelize = require('sequelize');
 
 module.exports = class User extends Sequelize.Model {
@@ -41,3 +42,4 @@ module.exports = class User extends Sequelize.Model {
     db.User.hasMany(db.Comment, { foreignKey: 'commenter', sourceKey: 'id' });
   }
 };
+
